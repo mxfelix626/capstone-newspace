@@ -1,0 +1,83 @@
+"use strict";
+
+const jwt = require("jsonwebtoken");
+const { SECRET_KEY } = require("../config");
+const { UnauthorizedError } = require("../expressError");
+
+
+/** Middleware: Authenticate user.
+ *
+ * If a token was provided, verify it, and, if valid, store the token payload
+ * on res.locals
+ *
+ * It's not an error if no token was provided or if the token is not valid.
+ */
+
+const authenticateJWT = (req, res, next) => {
+  try {
+    const authHeader = req.headers && req.headers.authorization;
+
+    if (authHeader) {
+      const token = authHeader.replace(/^[Bb]earer /, "").trim();
+      res.locals.user = jwt.verify(token, SECRET_KEY);
+    }
+    return next();
+  } catch (err) {
+    return next();
+  }
+}
+
+/** Middleware to use when they must be logged in.
+ *
+ * If not, raises Unauthorized.
+ */
+
+const ensureLoggedIn = (req, res, next) => {
+  try {
+    if (!res.locals.user) throw new UnauthorizedError();
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
+
+const ensureAdmin = (req, res, next) => {
+  console.log("res.locals.user", res.locals.user);
+  try {
+    if (!res.locals.user || !res.locals.user.isAdmin) {
+      throw new UnauthorizedError();
+    }
+    return next();
+  } catch (err) {
+    return next(err);
+  }  
+}
+
+const ensureAdminOrCorrectUser = (req, res, next) =>{
+  try {
+    if ((!res.locals.user || !res.locals.user.isAdmin) && (res.locals.user.username !== req.params.username)) {
+      throw new UnauthorizedError();
+    }
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
+
+const ensureCorrectUser = (req, res, next) => {
+  try {
+    if ((!res.locals.user) && (res.locals.user.username !== req.params.username)) {
+      throw new UnauthorizedError();
+    }
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
+module.exports = {
+  authenticateJWT,
+  ensureLoggedIn,
+  ensureAdmin,
+  ensureAdminOrCorrectUser,
+  ensureCorrectUser
+};
