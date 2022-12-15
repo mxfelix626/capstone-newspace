@@ -14,3 +14,5 @@ Test run with jest
 
 New user clicks register to create an account. Enter First name, last name, username, password and email address. User then logs in. user can then create new posts or view other posts and click the heart to like or unlike the post
 
+API - client/NewSpace.postman_collection.json 
+
