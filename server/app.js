@@ -9,6 +9,7 @@ const { authenticateJWT } = require("./middleware/auth");
 const express = require("express");
 const cors = require("cors");
 const app = express();
+console.log('app.js started')
 app.options('*', cors());
 
 // app.use((req, res, next) => {
@@ -23,25 +24,25 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-// const options = {
-//   "origin": "*",
-//   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   "preflightContinue": false,
-//   "optionsSuccessStatus": 204
-// }
-// app.options('/users/edit', function (req, res) {
-//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
-//   res.setHeader('Access-Control-Allow-Methods', '*');
-//   res.setHeader("Access-Control-Allow-Headers", "*");
-//   res.end();
-// });
-// const allowCrossDomain = function (req, res, next) {
-//   res.header('Access-Control-Allow-Origin', "*");
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE, PATCH');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type');
-//   next();
-// }
-//app.use(allowCrossDomain);
+const options = {
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204
+}
+app.options('/users/edit', function (req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.end();
+});
+const allowCrossDomain = function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE, PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+}
+app.use(allowCrossDomain);
 
 const morgan = require("morgan");
 
@@ -71,5 +72,6 @@ app.use(function (err, req, res, next) {
     error: { message, status },
   });
 });
+console.log('app.js finished')
 
 module.exports = app;

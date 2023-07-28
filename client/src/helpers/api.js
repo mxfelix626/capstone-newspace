@@ -1,6 +1,6 @@
 
-const BASE_API_URL =  "https://capstone-server.herokuapp.com";
-//const BASE_API_URL = "http://localhost:5000" || "https://capstone-server.herokuapp.com";
+//const BASE_API_URL =  "https://capstone-server.herokuapp.com";
+const BASE_API_URL = "http://localhost:5000" || "https://capstone-server.herokuapp.com";
 //"https://capstone-server.herokuapp.com" || "http://localhost:5000";
 
 export const authenticateUser = async (params) => {

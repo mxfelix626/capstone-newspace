@@ -1,5 +1,6 @@
 "use strict";
 /** Database setup for newspace. */
+console.log('db.js started')
 const { Client } = require("pg");
 const { getDatabaseUri } = require("./config");
 
@@ -19,5 +20,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 db.connect();
+console.log('db.js finished')
 
 module.exports = db;

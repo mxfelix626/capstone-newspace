@@ -14,6 +14,7 @@ function getDatabaseUri() {
   return (process.env.NODE_ENV === "test")
       ? "newspace_test"
       : process.env.DATABASE_URL || "newspace";
+  // return('newspace_test')
 }
 
 // Speed up bcrypt during tests, since the algorithm safety isn't being tested
